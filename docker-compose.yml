@@ -1,0 +1,12 @@
+version: '2.0'
+
+services:
+  pubsub:
+    image: google/cloud-sdk:latest
+    command: gcloud --quiet beta emulators pubsub start --host-port=0.0.0.0:8080 --project=test
+  test:
+    build: .
+    links:
+      - pubsub:pubsub
+    environment:
+      - PUBSUB_EMULATOR_HOST=pubsub:8080
